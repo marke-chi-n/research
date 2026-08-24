@@ -1,5 +1,7 @@
 # Brazil Market Watch — routine design for Tripla sales & directors
 
+> **Canonical output:** every run of this routine appends to the **"Bits Diários"** tab of the Tripla Market Dossier artifact (`tripla-analysis/tripla-report.html`, published at https://claude.ai/code/artifact/2a2be716-0389-4802-afd6-ba417375cb98). The dossier is now in Portuguese and is the base going forward — see `.claude/skills/br-market-watch/SKILL.md` for the exact HTML block to append per run.
+
 **Goal:** a recurring digest of Brazilian-market news that helps sales and directors spot **market gaps and opportunities tied to what Tripla sells** (the three pillars: Disponibilidade, Proteção, Conformidade, and every named technology/partner in the portfolio). Only trustworthy sources; every item ships with a link, a source/date, and a short preview — never a bare headline.
 
 ---

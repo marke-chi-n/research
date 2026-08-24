@@ -44,8 +44,29 @@ Group by pillar (Disponibilidade / Proteção / Conformidade). Open with a 2-3 b
 **Why it matters for Tripla:** one sentence tying it to a specific gap, prospect, competitive threat, or regulatory hook.
 ```
 
-## Step 4 — Deliver
+## Step 4 — Deliver: append to the "Bits Diários" tab of the canonical artifact
 
-Default to a concise chat response. If the user wants it as a shareable document, offer to publish it as an artifact or write it to `tripla-analysis/digests/YYYY-MM-DD-market-watch.md`.
+This routine's canonical output is the **"Bits Diários"** tab inside the Tripla Market Dossier artifact at `tripla-analysis/tripla-report.html` (published artifact: https://claude.ai/code/artifact/2a2be716-0389-4802-afd6-ba417375cb98). Do not create a separate document by default — that artifact is the base and every run adds to it.
+
+1. Read `tripla-analysis/tripla-report.html`.
+2. Add a new `<button class="daypill" data-day="YYYY-MM-DD">DD.MM</button>` to `#daypicker`, mark the previous day's button `aria-selected="false"`, and mark the new one `aria-selected="true"`.
+3. Add a new `<div class="daylog" data-day="YYYY-MM-DD">…</div>` block (copy the structure of the existing block: a `.top-picks` summary of 2–3 director-level highlights, then `.feed` with one `.feed-item` per news item). Give it the matching JS-toggled `style="display:none"` — the tab-switcher script shows/hides by `data-day`, and only the most recent day should be visible by default.
+4. Each `.feed-item` follows this exact structure (all in Portuguese, matching the existing entries):
+   ```html
+   <div class="feed-item">
+     <div class="feed-eyebrow">DD mês · Pilar</div>
+     <div class="feed-title">Manchete <span class="read">(leitura de N min)</span></div>
+     <div class="feed-source">Fonte · data</div>
+     <p class="feed-preview">2-3 frases explicando o que a matéria realmente diz.</p>
+     <div class="feed-tags">Tag: <b>Pilar</b> · Tecnologia/Fornecedor · Vertical</div>
+     <p class="feed-why"><b>Por que importa para a Tripla:</b> uma frase ligando a notícia a uma lacuna, prospect, ameaça competitiva ou gancho regulatório.</p>
+     <a class="feed-link" href="URL real da fonte">Ler na fonte ↗</a>
+   </div>
+   ```
+   Never fabricate a URL — every `feed-link` must be a real, verified link found during Step 1–2. If a strong candidate item has no clean primary-source URL, drop it rather than guess one.
+5. Republish: call the Artifact tool with `file_path: tripla-analysis/tripla-report.html` and `url: https://claude.ai/code/artifact/2a2be716-0389-4802-afd6-ba417375cb98` (same URL, so it updates in place rather than creating a new artifact).
+6. Commit the updated HTML to the repo with a message like "Bits Diários — DD.MM".
+
+Default to a concise chat summary of what was added (headline count, top picks) rather than pasting the full HTML back to the user — point them at the artifact.
 
 Re-validate the Tier 1/2 outlet list and Tier 4 partner blog URLs roughly quarterly — outlets change domains or go quiet.
