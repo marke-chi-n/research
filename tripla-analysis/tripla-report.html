@@ -1,0 +1,627 @@
+<title>Tripla Market Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f5f1;
+    --surface:#ffffff;
+    --surface-2:#eeece4;
+    --ink:#171b1d;
+    --ink-soft:#454b4e;
+    --muted:#6c747a;
+    --line:#dcd9cd;
+    --accent:#1b4b5f;
+    --accent-strong:#0f3646;
+    --accent-soft:#e4ece9;
+    --amber:#a8621f;
+    --amber-soft:#f4e6d5;
+    --chip-disp:#1b4b5f;
+    --chip-disp-bg:#e4ece9;
+    --chip-prot:#7a2a2f;
+    --chip-prot-bg:#f4e2e0;
+    --chip-conf:#5c4a17;
+    --chip-conf-bg:#efe6cf;
+    --shadow: 0 1px 2px rgba(23,27,29,0.06), 0 8px 24px -12px rgba(23,27,29,0.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#121513;
+      --surface:#191d1b;
+      --surface-2:#20251f;
+      --ink:#eceae3;
+      --ink-soft:#c3c3bb;
+      --muted:#8c928c;
+      --line:#2d322c;
+      --accent:#6fb3c4;
+      --accent-strong:#8fc7d5;
+      --accent-soft:#1c2a2a;
+      --amber:#d99a5e;
+      --amber-soft:#2b2013;
+      --chip-disp:#8fd3c8;
+      --chip-disp-bg:#16281f;
+      --chip-prot:#e79b96;
+      --chip-prot-bg:#2b1817;
+      --chip-conf:#e3c877;
+      --chip-conf-bg:#292110;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 8px 30px -12px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#121513;
+    --surface:#191d1b;
+    --surface-2:#20251f;
+    --ink:#eceae3;
+    --ink-soft:#c3c3bb;
+    --muted:#8c928c;
+    --line:#2d322c;
+    --accent:#6fb3c4;
+    --accent-strong:#8fc7d5;
+    --accent-soft:#1c2a2a;
+    --amber:#d99a5e;
+    --amber-soft:#2b2013;
+    --chip-disp:#8fd3c8;
+    --chip-disp-bg:#16281f;
+    --chip-prot:#e79b96;
+    --chip-prot-bg:#2b1817;
+    --chip-conf:#e3c877;
+    --chip-conf-bg:#292110;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 8px 30px -12px rgba(0,0,0,0.6);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.6;
+  }
+  h1,h2,h3,h4{
+    font-family:"Newsreader", ui-serif, Georgia, serif;
+    font-weight:600;
+    text-wrap:balance;
+    color:var(--ink);
+    margin:0;
+  }
+  .mono{font-family:"IBM Plex Mono", ui-monospace, monospace;}
+  a{color:var(--accent-strong); text-decoration:none; border-bottom:1px solid transparent;}
+  a:hover{border-bottom-color:currentColor;}
+  a:focus-visible, button:focus-visible, summary:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px;}
+
+  .shell{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 24px 96px;
+    display:grid;
+    grid-template-columns:220px minmax(0,1fr);
+    gap:56px;
+  }
+  @media (max-width:920px){
+    .shell{grid-template-columns:1fr; gap:0;}
+  }
+
+  header.masthead{
+    grid-column:1 / -1;
+    padding:56px 0 36px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12.5px;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    color:var(--accent-strong);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px; height:7px; border-radius:50%;
+    background:var(--accent-strong);
+    display:inline-block;
+  }
+  header.masthead h1{font-size:clamp(2rem, 4vw, 2.9rem); max-width:22ch;}
+  .masthead-sub{color:var(--ink-soft); max-width:62ch; font-size:1.05rem;}
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:28px;
+    margin-top:8px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+  .meta-row strong{color:var(--ink-soft); font-weight:500;}
+
+  .stat-strip{
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    margin-top:-1px;
+  }
+  @media (max-width:640px){.stat-strip{grid-template-columns:repeat(2,1fr);}}
+  .stat{
+    background:var(--surface);
+    padding:20px 22px;
+  }
+  .stat .num{
+    font-family:"Newsreader", serif;
+    font-weight:600;
+    font-size:1.9rem;
+    font-variant-numeric:tabular-nums;
+    color:var(--accent-strong);
+  }
+  .stat .label{font-size:12.5px; color:var(--muted); margin-top:2px;}
+
+  nav.toc{
+    position:sticky;
+    top:32px;
+    align-self:start;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    padding-top:40px;
+  }
+  nav.toc a{
+    color:var(--ink-soft);
+    font-size:13.5px;
+    padding:7px 10px;
+    border-radius:6px;
+    border-bottom:none;
+  }
+  nav.toc a:hover{background:var(--surface-2); color:var(--ink);}
+  nav.toc .toc-label{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+    padding:0 10px 6px;
+  }
+  @media (max-width:920px){
+    nav.toc{
+      position:static;
+      flex-direction:row;
+      overflow-x:auto;
+      padding:16px 0;
+      border-bottom:1px solid var(--line);
+      gap:2px;
+    }
+    nav.toc .toc-label{display:none;}
+    nav.toc a{flex:0 0 auto; white-space:nowrap;}
+  }
+
+  main{padding-top:40px; min-width:0;}
+  section{margin-bottom:64px; scroll-margin-top:24px;}
+  section > .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:22px;
+    border-left:3px solid var(--accent);
+    padding-left:14px;
+  }
+  section > .sec-head .idx{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:13px;
+    color:var(--muted);
+  }
+  section > .sec-head h2{font-size:1.6rem;}
+  section > p.lede{color:var(--ink-soft); max-width:70ch; margin-bottom:26px;}
+
+  .pillar-block{margin-bottom:30px;}
+  .pillar-head{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12px;
+    letter-spacing:0.04em;
+    padding:5px 12px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .pillar-disp{color:var(--chip-disp); background:var(--chip-disp-bg);}
+  .pillar-prot{color:var(--chip-prot); background:var(--chip-prot-bg);}
+  .pillar-conf{color:var(--chip-conf); background:var(--chip-conf-bg);}
+
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(230px,1fr));
+    gap:12px;
+  }
+  .sol-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 18px;
+    box-shadow:var(--shadow);
+  }
+  .sol-card .name{font-weight:600; font-size:0.98rem;}
+  .sol-card .vendor{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:11.5px;
+    color:var(--muted);
+    margin-top:4px;
+  }
+
+  .product-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin-top:18px;
+  }
+  @media (max-width:760px){.product-row{grid-template-columns:1fr;}}
+  .product-card{
+    background:var(--accent-soft);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:20px;
+  }
+  .product-card .name{font-family:"Newsreader", serif; font-size:1.2rem; font-weight:600;}
+  .product-card .role{font-size:13px; color:var(--ink-soft); margin-top:4px;}
+  .product-card .url{font-family:"IBM Plex Mono", monospace; font-size:12px; margin-top:10px; display:block;}
+
+  table{width:100%; border-collapse:collapse; font-size:14.5px;}
+  .table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:10px;}
+  th,td{padding:11px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--muted);
+    background:var(--surface-2);
+    white-space:nowrap;
+  }
+  tr:last-child td{border-bottom:none;}
+  td a{white-space:nowrap;}
+
+  .partner-grid{
+    display:flex; flex-wrap:wrap; gap:8px;
+  }
+  .partner-pill{
+    font-size:13.5px;
+    padding:7px 13px;
+    border-radius:999px;
+    background:var(--surface);
+    border:1px solid var(--line);
+  }
+  .note{
+    margin-top:16px;
+    font-size:13.5px;
+    color:var(--muted);
+    border-left:2px solid var(--amber);
+    padding:4px 0 4px 12px;
+  }
+
+  .glossary{display:flex; flex-wrap:wrap; gap:6px;}
+  .term{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12px;
+    padding:4px 9px;
+    border-radius:5px;
+    background:var(--surface-2);
+    color:var(--ink-soft);
+  }
+
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:760px){.two-col{grid-template-columns:1fr;}}
+  .assess-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:22px 24px;
+    box-shadow:var(--shadow);
+  }
+  .assess-card h3{font-size:1.05rem; margin-bottom:12px; display:flex; align-items:center; gap:8px;}
+  .assess-card.strengths h3{color:var(--chip-disp);}
+  .assess-card.weaknesses h3{color:var(--chip-prot);}
+  .assess-card ul{margin:0; padding-left:20px;}
+  .assess-card li{margin-bottom:10px; font-size:14.5px; color:var(--ink-soft);}
+  .assess-card li::marker{color:var(--muted);}
+
+  .verdict{
+    background:var(--surface-2);
+    border-radius:12px;
+    padding:24px 26px;
+    margin-top:20px;
+  }
+  .verdict h3{font-size:1.05rem; margin-bottom:8px;}
+  .verdict p{margin:0; color:var(--ink-soft); font-size:15px;}
+
+  .tier-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 20px;
+    margin-bottom:12px;
+  }
+  .tier-card .tier-title{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:8px;
+  }
+  .tier-card .tier-title .n{
+    font-family:"Newsreader", serif; font-weight:600; font-size:1.15rem; color:var(--accent-strong);
+  }
+  .tier-card .tier-title .desc{font-size:13px; color:var(--muted);}
+  .tier-card .sources{font-size:14px; color:var(--ink-soft); line-height:1.7;}
+  .tier-card .sources a{margin-right:2px;}
+
+  .template-block{
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:20px 22px;
+    font-size:14px;
+  }
+  .template-block .fake-link{color:var(--accent-strong); font-weight:600;}
+  .template-block .fake-meta{
+    font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--muted); margin:4px 0 10px;
+  }
+  .template-block blockquote{
+    margin:0 0 10px; padding-left:12px; border-left:2px solid var(--line);
+    color:var(--ink-soft); font-style:italic;
+  }
+  .template-block .tagline{font-size:13px; margin-bottom:4px;}
+  .template-block .why{font-size:13.5px; color:var(--ink-soft);}
+  .template-block .why strong{color:var(--ink);}
+
+  .cadence-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:18px;}
+  .cadence-card{
+    flex:1 1 220px;
+    background:var(--amber-soft);
+    border-radius:10px;
+    padding:16px 18px;
+  }
+  .cadence-card .when{font-family:"IBM Plex Mono", monospace; font-size:11.5px; color:var(--amber); text-transform:uppercase; letter-spacing:0.05em;}
+  .cadence-card p{margin:6px 0 0; font-size:14px; color:var(--ink-soft);}
+
+  footer{
+    grid-column:1/-1;
+    border-top:1px solid var(--line);
+    margin-top:20px;
+    padding-top:24px;
+    font-size:13px;
+    color:var(--muted);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+</style>
+
+<div class="shell">
+  <header class="masthead">
+    <span class="eyebrow">Market Dossier · Internal</span>
+    <h1>Tripla — website analysis &amp; Brazil market-watch routine</h1>
+    <p class="masthead-sub">A read of tripla.com.br's public portfolio, partner ecosystem and positioning, plus a source-mapped routine for tracking Brazilian market news relevant to what Tripla sells.</p>
+    <div class="meta-row">
+      <span><strong>Prepared</strong> 24 Aug 2026</span>
+      <span><strong>Source</strong> live crawl of tripla.com.br</span>
+      <span><strong>For</strong> sales &amp; directors</span>
+    </div>
+  </header>
+
+  <div class="stat-strip">
+    <div class="stat"><div class="num">130+</div><div class="label">Clients managed</div></div>
+    <div class="stat"><div class="num">600+</div><div class="label">Active certifications</div></div>
+    <div class="stat"><div class="num">10+</div><div class="label">Years in market</div></div>
+    <div class="stat"><div class="num">70%</div><div class="label">YoY growth (self-reported)</div></div>
+  </div>
+
+  <nav class="toc">
+    <span class="toc-label">Contents</span>
+    <a href="#solutions">1 · Solutions</a>
+    <a href="#partners">2 · Partners</a>
+    <a href="#tech">3 · Technologies</a>
+    <a href="#analysis">4 · Critical analysis</a>
+    <a href="#routine">5 · Market-watch routine</a>
+  </nav>
+
+  <main>
+    <section id="solutions">
+      <div class="sec-head"><span class="idx">01</span><h2>Solutions offered</h2></div>
+      <p class="lede">Everything sits under three pillars — Disponibilidade, Proteção, Conformidade — delivered by three dedicated teams working, per Tripla's own framing, in one integrated cycle rather than as silos.</p>
+
+      <div class="pillar-block">
+        <span class="pillar-head pillar-prot">PROTEÇÃO — cybersecurity</span>
+        <div class="card-grid">
+          <div class="sol-card"><div class="name">SOC / MDR 24x7</div><div class="vendor">CyberWatch (proprietary)</div></div>
+          <div class="sol-card"><div class="name">SASE / ZTNA</div><div class="vendor">Cloudflare</div></div>
+          <div class="sol-card"><div class="name">WAF / API Shield</div><div class="vendor">Cloudflare</div></div>
+          <div class="sol-card"><div class="name">EDR</div><div class="vendor">Trend Micro</div></div>
+          <div class="sol-card"><div class="name">Microssegmentação</div><div class="vendor">Illumio</div></div>
+          <div class="sol-card"><div class="name">AI Security</div><div class="vendor">agentic-AI security guide</div></div>
+          <div class="sol-card"><div class="name">Human Risk Management</div><div class="vendor">PhishX</div></div>
+          <div class="sol-card"><div class="name">Insider Risk monitoring</div><div class="vendor">Teramind</div></div>
+          <div class="sol-card"><div class="name">Proteção OT</div><div class="vendor">TXOne</div></div>
+          <div class="sol-card"><div class="name">PAM</div><div class="vendor">BeyondTrust</div></div>
+          <div class="sol-card"><div class="name">IAM</div><div class="vendor">Okta</div></div>
+          <div class="sol-card"><div class="name">Vulnerability Management</div><div class="vendor">Qualys</div></div>
+          <div class="sol-card"><div class="name">CTEM</div><div class="vendor">XM Cyber</div></div>
+          <div class="sol-card"><div class="name">Firewall / SD-WAN Enterprise</div><div class="vendor">Huawei, Check Point</div></div>
+          <div class="sol-card"><div class="name">Video analytics</div><div class="vendor">Dahua</div></div>
+        </div>
+      </div>
+
+      <div class="pillar-block">
+        <span class="pillar-head pillar-disp">DISPONIBILIDADE — infrastructure</span>
+        <div class="card-grid">
+          <div class="sol-card"><div class="name">Corporate connectivity</div><div class="vendor">FTTO-GPON, Wi-Fi 6/7, Huawei</div></div>
+          <div class="sol-card"><div class="name">BESS energy storage</div><div class="vendor">Livoltek</div></div>
+          <div class="sol-card"><div class="name">Data Center / Colocation</div><div class="vendor">—</div></div>
+          <div class="sol-card"><div class="name">Data Recovery</div><div class="vendor">Cohesity</div></div>
+          <div class="sol-card"><div class="name">Secure VDI / remote work</div><div class="vendor">Trisky (proprietary)</div></div>
+          <div class="sol-card"><div class="name">PCN — business continuity plan</div><div class="vendor">—</div></div>
+        </div>
+      </div>
+
+      <div class="pillar-block">
+        <span class="pillar-head pillar-conf">CONFORMIDADE — GRC</span>
+        <div class="card-grid">
+          <div class="sol-card"><div class="name">Data &amp; access governance</div><div class="vendor">Varonis → Netwrix migration</div></div>
+          <div class="sol-card"><div class="name">DPO as a Service</div><div class="vendor">—</div></div>
+          <div class="sol-card"><div class="name">TPRM</div><div class="vendor">third-party risk</div></div>
+          <div class="sol-card"><div class="name">vCISO</div><div class="vendor">—</div></div>
+          <div class="sol-card"><div class="name">Governança algorítmica</div><div class="vendor">ISO 42001, EU AI Act</div></div>
+          <div class="sol-card"><div class="name">GRC 360°</div><div class="vendor">Autoritas (proprietary)</div></div>
+          <div class="sol-card"><div class="name">LGPD / ISO 27001 awareness</div><div class="vendor">—</div></div>
+        </div>
+      </div>
+
+      <h3 style="font-size:1rem; margin-bottom:6px;">Proprietary products — "Produtos by Tripla"</h3>
+      <div class="product-row">
+        <div class="product-card"><div class="name">CyberWatch</div><div class="role">SOC/MDR platform, AI-assisted detection</div><a class="url" href="https://cyberwatch.com.br">cyberwatch.com.br ↗</a></div>
+        <div class="product-card"><div class="name">Trisky</div><div class="role">VDI / remote-work governance SaaS</div><a class="url" href="https://trisky.ia.br">trisky.ia.br ↗</a></div>
+        <div class="product-card"><div class="name">Autoritas</div><div class="role">GRC 360° — risk, compliance, audit</div><a class="url" href="https://autoritas.com.br">autoritas.com.br ↗</a></div>
+      </div>
+    </section>
+
+    <section id="partners">
+      <div class="sec-head"><span class="idx">02</span><h2>Partners mentioned or displayed</h2></div>
+      <p class="lede">Technology manufacturers named on the public site, kept separate from case-study client brands.</p>
+
+      <h3 style="font-size:0.95rem; margin-bottom:10px;">Technology manufacturers</h3>
+      <div class="partner-grid">
+        <span class="partner-pill">Cloudflare</span><span class="partner-pill">Huawei</span><span class="partner-pill">Dahua</span>
+        <span class="partner-pill">Teramind</span><span class="partner-pill">BeyondTrust</span><span class="partner-pill">Check Point</span>
+        <span class="partner-pill">Illumio</span><span class="partner-pill">Okta</span><span class="partner-pill">TXOne</span>
+        <span class="partner-pill">Livoltek</span><span class="partner-pill">Trend Micro</span><span class="partner-pill">Qualys</span>
+        <span class="partner-pill">XM Cyber</span><span class="partner-pill">Cohesity</span><span class="partner-pill">Netwrix</span>
+        <span class="partner-pill">OneTrust</span><span class="partner-pill">PhishX</span>
+      </div>
+      <p class="note">A dedicated "Varonis → Netwrix migration" page implies a prior Varonis relationship — worth confirming internally before a prospect asks about it.</p>
+
+      <h3 style="font-size:0.95rem; margin:22px 0 10px;">Named client / case-study brands (not partners)</h3>
+      <div class="partner-grid">
+        <span class="partner-pill">iFood</span><span class="partner-pill">Volkswagen</span><span class="partner-pill">AlmavivA</span>
+        <span class="partner-pill">ValeCard</span><span class="partner-pill">Falconi</span><span class="partner-pill">TV Aparecida</span>
+        <span class="partner-pill">MRS Logística</span><span class="partner-pill">Colégio Santa Maria Minas</span>
+        <span class="partner-pill">Federação Unimed Centro Brasileira</span><span class="partner-pill">Unimed BH</span>
+        <span class="partner-pill">Unimed Goiânia</span><span class="partner-pill">Hermes Pardini (Grupo Fleury)</span>
+        <span class="partner-pill">Eucatex</span><span class="partner-pill">Ferroeste</span><span class="partner-pill">Tahto</span>
+        <span class="partner-pill">SIMPAR</span><span class="partner-pill">Atacadão</span><span class="partner-pill">State Grid</span>
+        <span class="partner-pill">Axia Energia</span><span class="partner-pill">Copa Energia</span><span class="partner-pill">Atento</span>
+        <span class="partner-pill">Cactus Gaming</span><span class="partner-pill">Argo Energia</span>
+      </div>
+      <p class="note">Several case studies cite an unnamed "confidential client" (steel/siderurgy, an industrial multinational, a call-center multinational) — likely NDA-bound.</p>
+    </section>
+
+    <section id="tech">
+      <div class="sec-head"><span class="idx">03</span><h2>Technologies &amp; tools referenced</h2></div>
+      <p class="lede">Tripla runs a public glossary that doubles as an SEO/thought-leadership play — a fair proxy for the technical vocabulary it wants to be found for.</p>
+      <div class="glossary">
+        <span class="term">CASB</span><span class="term">CNAPP</span><span class="term">CSPM</span><span class="term">CTI</span>
+        <span class="term">CWPP</span><span class="term">DDoS</span><span class="term">DLP</span><span class="term">DPO</span>
+        <span class="term">DRaaS</span><span class="term">EDR/XDR</span><span class="term">FTTO-GPON</span><span class="term">GRC</span>
+        <span class="term">IAM/PAM</span><span class="term">Insider Risk</span><span class="term">ISO 42001</span><span class="term">EU AI Act</span>
+        <span class="term">ISO 22301</span><span class="term">ISO 27001</span><span class="term">LGPD</span><span class="term">MDR</span>
+        <span class="term">Microssegmentação</span><span class="term">MITRE ATT&amp;CK</span><span class="term">MTTD/MTTR</span><span class="term">NDR</span>
+        <span class="term">NIST CSF 2.0</span><span class="term">NOC</span><span class="term">Observabilidade</span><span class="term">PCI DSS</span>
+        <span class="term">Phishing</span><span class="term">Ransomware</span><span class="term">RTO/RPO</span><span class="term">SASE</span>
+        <span class="term">SD-WAN</span><span class="term">SIEM</span><span class="term">SOAR</span><span class="term">SOC 24x7</span>
+        <span class="term">Threat Hunting</span><span class="term">UAM</span><span class="term">VDI</span><span class="term">WAAP</span>
+        <span class="term">WAF</span><span class="term">Wi-Fi 6/7</span><span class="term">Workforce Analytics</span><span class="term">XDR</span>
+        <span class="term">Zero Trust</span><span class="term">ZTNA</span>
+      </div>
+    </section>
+
+    <section id="analysis">
+      <div class="sec-head"><span class="idx">04</span><h2>Critical analysis</h2></div>
+      <div class="two-col">
+        <div class="assess-card strengths">
+          <h3>Strengths</h3>
+          <ul>
+            <li>Three-pillar, full-stack integrator model — one relationship spans infra, cyber and GRC instead of a point solution.</li>
+            <li>Proprietary IP in all three pillars (CyberWatch, Trisky, Autoritas) — better margin and stickiness than a pure reseller.</li>
+            <li>Deep manufacturer bench: Cloudflare, Okta, Qualys, BeyondTrust, Trend Micro, Huawei, Check Point, Illumio, TXOne, Cohesity, Netwrix.</li>
+            <li>Unusually broad certification spread (ISO 27001/22301/20000-1, IAPP, EC-Council, HCIE) — a real RFP scoring advantage.</li>
+            <li>Brazil-native 24x7 NOC/SOC — timezone, language and LGPD data-residency edge over offshore MSSPs.</li>
+            <li>Diversified blue-chip proof points: iFood, Volkswagen, SIMPAR, multiple Unimed federations, Hermes Pardini/Fleury, State Grid.</li>
+            <li>Active thought leadership (press citing Roberto Toscani on AI governance) feeds top-of-funnel credibility.</li>
+          </ul>
+        </div>
+        <div class="assess-card weaknesses">
+          <h3>Weaknesses / risks</h3>
+          <ul>
+            <li>Structural dependence on third-party licensing — a manufacturer going direct, or losing a program to a rival integrator, is a real renewal risk.</li>
+            <li>Visible partner churn: the "Varonis → Netwrix migration" page signals a manufacturer switch worth having a ready answer for.</li>
+            <li>Heavy use of anonymized case studies weakens otherwise strong industrial DR/DDoS proof points.</li>
+            <li>25+ solution lines spanning cyber, GRC, VDI, video surveillance and even battery storage risk a "jack of all trades" read — BESS and CCTV sit oddly next to a "cybersecurity enterprise" headline.</li>
+            <li>No visible pricing/packaging tier — every deal is a bespoke cycle, no anchor for smaller or faster-moving prospects.</li>
+            <li>Domestic-only footprint, with no visible LatAm/global-account story for multinational HQ buyers.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="verdict">
+        <h3>Market positioning</h3>
+        <p>Tripla reads as a Brazilian "high level" systems integrator / MSSP / GRC-as-a-service player for enterprise and upper-mid-market accounts in regulated, operationally-critical verticals — healthcare, financial services, energy, industry, logistics, retail, call center/BPO. The pitch is consolidation: one vendor across availability, protection and compliance, anchored by three owned products and a large certification bench. Its natural competitive set is Brazilian integrators/MSSPs, boutique LGPD/GRC consultancies, and global MSSPs expanding into Brazil — and owning CyberWatch, Trisky and Autoritas is the piece a pure reseller can't easily copy.</p>
+      </div>
+      <div class="verdict" style="margin-top:14px;">
+        <h3>Overall impression</h3>
+        <p>A credibly-scaled (130+ clients, 10+ years, 70% YoY growth), certification-heavy integrator with a coherent three-pillar narrative and real proprietary IP — stronger on breadth and delivery credibility than on crisp positioning. The clearest near-term opportunity is tightening the story (the energy-storage and video lines dilute an otherwise sharp "cybersecurity + compliance" narrative) and converting more anonymized cases into named references as NDAs allow.</p>
+      </div>
+    </section>
+
+    <section id="routine">
+      <div class="sec-head"><span class="idx">05</span><h2>Brazil market-watch routine</h2></div>
+      <p class="lede">A recurring, source-mapped digest built to surface market gaps and opportunities tied to Tripla's own portfolio — every item carries a link, a source/date and a short preview. Full spec and an installable skill (<span class="mono">br-market-watch</span>) ship alongside this dossier in the repo.</p>
+
+      <div class="tier-card">
+        <div class="tier-title"><span class="n">Tier 1</span><span class="desc">Brazil cybersecurity media</span></div>
+        <div class="sources"><a href="https://www.cisoadvisor.com.br">CISO Advisor</a> · <a href="https://minutodaseguranca.blog.br">Minuto da Segurança da Informação</a> · <a href="https://boletimsec.com">BoletimSec</a> · <a href="https://www.cybersecbrazil.com.br/blog">Cyber Security Brazil</a> · Security Report <span class="mono" style="font-size:11px;">(verify URL)</span></div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-title"><span class="n">Tier 2</span><span class="desc">Enterprise IT / digital transformation</span></div>
+        <div class="sources"><a href="https://itforum.com.br">IT Forum</a> · <a href="https://tiinside.com.br">TI Inside</a> · <a href="https://convergenciadigital.com.br">Convergência Digital</a> · <a href="https://www.mobiletime.com.br">Mobile Time</a> · <a href="https://teletime.com.br">TELETIME</a></div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-title"><span class="n">Tier 3</span><span class="desc">Legal &amp; regulatory — LGPD, GRC, AI</span></div>
+        <div class="sources"><a href="https://www.migalhas.com.br/coluna/migalhas-de-protecao-de-dados">Migalhas — Proteção de Dados/IA</a> · <a href="https://www.jota.info">JOTA</a> · <a href="https://dataprivacy.com.br">Data Privacy Brasil</a> · <a href="https://www.gov.br/anpd">ANPD (official)</a></div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-title"><span class="n">Tier 4</span><span class="desc">Partner newsrooms &amp; blogs</span></div>
+        <div class="sources">Cloudflare Blog · Okta Blog · Qualys Blog · BeyondTrust Blog · Illumio Blog · TXOne Networks · Trend Micro Research · Netwrix Blog · Cohesity Blog · XM Cyber Blog · Check Point Research · Huawei Enterprise Brasil · Dahua newsroom · OneTrust Blog · PhishX Blog</div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-title"><span class="n">Tier 5</span><span class="desc">Vertical press — activate per active deal</span></div>
+        <div class="sources">Febraban Tech (financial) · ANEEL (energy) · ANS (health) · Valor Econômico — tecnologia · sector trades for industry/retail/call center, pulled in on demand rather than tracked continuously.</div>
+      </div>
+
+      <h3 style="font-size:1rem; margin:28px 0 10px;">Output template</h3>
+      <div class="template-block">
+        <div class="fake-link">Ataque de ransomware interrompe operação de rede varejista no Sudeste</div>
+        <div class="fake-meta">CISO Advisor · 18 ago 2026</div>
+        <blockquote>Exemplo ilustrativo: uma rede varejista teve sistemas de ponto-de-venda paralisados por 36h após um ataque de ransomware; a apuração inicial aponta ausência de segmentação de rede como fator de propagação.</blockquote>
+        <div class="tagline mono">Tag: Proteção · Microssegmentação / EDR · Varejo</div>
+        <div class="why"><strong>Why it matters for Tripla:</strong> a live, named example of the exact gap Illumio microsegmentation + Trend Micro EDR close — usable as a cold-outreach hook to varejo accounts this week.</div>
+      </div>
+
+      <div class="cadence-row">
+        <div class="cadence-card"><div class="when">Weekly · Monday</div><p>8–15 item tactical digest, grouped by pillar, "top 3" summary up top for directors.</p></div>
+        <div class="cadence-card"><div class="when">Monthly</div><p>Synthesis across four weekly digests: named trends, regulatory themes, competitor moves, explicit "gaps to pursue" section.</p></div>
+      </div>
+      <p class="note">Run it via the <span class="mono">br-market-watch</span> skill in this repo (on demand today; schedule it on a persistent session/account for a hands-free weekly cadence). Re-validate every source URL roughly quarterly.</p>
+    </section>
+
+    <footer>
+      <span>Tripla — internal market dossier</span>
+      <span>Prepared 24 Aug 2026 from a live crawl of tripla.com.br</span>
+    </footer>
+  </main>
+</div>
