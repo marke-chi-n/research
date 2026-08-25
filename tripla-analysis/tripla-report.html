@@ -418,6 +418,55 @@
     cursor:pointer;
   }
   .daypill[aria-selected="true"]{color:#0c0c11; background:#b48eec; border-color:#b48eec;}
+
+  .bits-actions{
+    padding:18px 32px 0;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .gen-btn{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12.5px;
+    letter-spacing:0.02em;
+    color:#0c0c11;
+    background:#b48eec;
+    border:1px solid #b48eec;
+    border-radius:999px;
+    padding:10px 18px;
+    cursor:pointer;
+    transition:opacity 0.15s ease;
+  }
+  .gen-btn:hover{opacity:0.88;}
+  .gen-btn:active{opacity:0.75;}
+  .gen-status{
+    font-size:12.5px;
+    color:#8d8a9c;
+    max-width:44ch;
+  }
+  .gen-status.ok{color:#9fd8b8;}
+  .gen-fallback{
+    display:block;
+    width:100%;
+    margin:12px 32px 0;
+    box-sizing:border-box;
+    background:#141319;
+    color:#dcdae4;
+    border:1px solid #26242f;
+    border-radius:8px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12px;
+    padding:12px 14px;
+    resize:vertical;
+  }
+  .gen-fallback[hidden]{display:none;}
+  .gen-hint{
+    padding:6px 32px 0;
+    font-size:12px;
+    color:#6f6c80;
+    max-width:60ch;
+  }
   .top-picks{
     padding:20px 32px 4px;
     display:flex;
@@ -511,6 +560,13 @@
           <button class="daypill" data-day="2026-08-24" aria-selected="true">24.08</button>
         </div>
       </div>
+
+      <div class="bits-actions">
+        <button class="gen-btn" id="gen-btn" type="button">+ Gerar nova seleção de notícias</button>
+        <span class="gen-status" id="gen-status" aria-live="polite"></span>
+      </div>
+      <textarea class="gen-fallback" id="gen-fallback" readonly hidden rows="3"></textarea>
+      <p class="gen-hint">Este botão não busca notícias por si só — uma página publicada não pode navegar na web nem chamar o Claude sozinha. Ele copia um pedido pronto: cole numa conversa com o Claude para gerar a próxima edição e atualizar este mesmo artefato.</p>
 
       <div class="daylog" data-day="2026-08-24">
         <div class="top-picks">
@@ -795,6 +851,33 @@
     }
     tabBits.addEventListener('click', function(){ activate('bits'); });
     tabDossie.addEventListener('click', function(){ activate('dossie'); });
+
+    var genBtn = document.getElementById('gen-btn');
+    var genStatus = document.getElementById('gen-status');
+    var genFallback = document.getElementById('gen-fallback');
+    var GEN_PROMPT = "Rode a rotina br-market-watch e gere uma nova selecao de noticias do mercado brasileiro para a aba \"Bits Diarios\" do artefato Tripla Market Dossier (https://claude.ai/code/artifact/2a2be716-0389-4802-afd6-ba417375cb98). Anexe um novo bloco de dia com a data de hoje, seguindo exatamente o formato dos itens ja existentes (fonte real, previa, tag de pilar/tecnologia/vertical, \"por que importa para a Tripla\" e link real para a fonte), e republique o artefato na mesma URL.";
+
+    if(genBtn){
+      genBtn.addEventListener('click', function(){
+        function showFallback(msg){
+          genFallback.value = GEN_PROMPT;
+          genFallback.hidden = false;
+          genFallback.focus();
+          genFallback.select();
+          genStatus.className = 'gen-status';
+          genStatus.textContent = msg || 'Copie o texto abaixo e cole em uma conversa com o Claude.';
+        }
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(GEN_PROMPT).then(function(){
+            genFallback.hidden = true;
+            genStatus.className = 'gen-status ok';
+            genStatus.textContent = 'Prompt copiado — cole em uma conversa com o Claude para gerar a próxima edição.';
+          }, function(){ showFallback(); });
+        } else {
+          showFallback();
+        }
+      });
+    }
 
     var dayButtons = document.querySelectorAll('.daypill');
     var dayLogs = document.querySelectorAll('.daylog');
